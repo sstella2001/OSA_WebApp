@@ -35,7 +35,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/single", methods=["GET"])
+@app.route("/single")
 def single():
     try:
         r = requests.get("http://flaskosa.herokuapp.com/cmd/START")
@@ -49,7 +49,7 @@ def single():
     return render_template('index.html')
 
 
-@app.route("/fetch/<action>", methods=["GET"])
+@app.route("/fetch/<action>")
 def fetch(action):
     if action == "start":
         try:
@@ -74,7 +74,7 @@ def fetch(action):
         return render_template('index.html')
 
 
-@app.route("/api", methods=["GET"])
+@app.route("/api")
 def cmd():
     try:
         r = requests.get("http://flaskosa.herokuapp.com/cmd/").text
@@ -82,7 +82,7 @@ def cmd():
         r = ""
     return r
 
-@app.route("/api/<command>", methods=["GET"])
+@app.route("/api/<command>")
 def api(command):
     try:
         r = requests.get("http://flaskosa.herokuapp.com/cmd/" + command).text
@@ -90,7 +90,7 @@ def api(command):
         r = ""
     return requests.get("http://flaskosa.herokuapp.com/cmd/" + command).text
 
-@app.route("/cmd", methods=["GET"])
+@app.route("/cmd")
 def command():
     try:
         r = requests.get("http://flaskosa.herokuapp.com/cmd/" + request.args.get('command')).text
@@ -102,6 +102,6 @@ def command():
 def graph():
     return render_template('plotly_graph.html')
 
-@app.route("/data", methods=["GET"])
+@app.route("/data")
 def graphUpdate():
     return {"xdata": data.getXdata(), "ydata":data.getYdata()}
