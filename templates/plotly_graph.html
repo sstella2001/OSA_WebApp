@@ -1,0 +1,24 @@
+<html>
+<head>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+
+  <div id="plt"></div>
+  <script type="text/javascript">
+      Plotly.newPlot("plt", [{"x": [], "y": []}], {"xaxis": {"title": {"text": "Wavelength (M)"}}, "yaxis": {"title": {"text": "Signal (DBM)"}}});
+
+      setInterval(function(){
+        $.ajax({
+          url: '/data',
+          type: 'GET',
+          success: function(data){
+            Plotly.extendTraces("plt", {"x": [data["xdata"]], "y": [data["ydata"]]}, [0], data["xdata"].length);
+          }
+        });
+      }, 1000);
+  </script>
+</body>
+</html>

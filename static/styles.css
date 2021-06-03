@@ -1,0 +1,71 @@
+body {
+  text-align: center;
+  overflow-x: auto;
+}
+
+p {
+  font-size: 150%;
+  font-family: Calibri Light;
+}
+
+label {
+  font-size: 150%;
+  font-family: Calibri Light;
+  margin-left: 10%;
+}
+
+button {
+  color: white;
+  font-size: 150%;
+  margin: 5px;
+  font-family: Calibri Light;
+  background-color: green;
+  border-radius: 12px;
+  padding: 5px;
+}
+
+#start {
+  padding: 10px;
+  font-size: 200%;
+}
+
+#upper {
+  height: 60%;
+}
+
+#upper div {
+  height: 100%;
+  padding-top: 20px;
+}
+
+#lower {
+  min-height: 40%;
+  text-align: left;
+}
+
+#command {
+  width: 40%;
+}
+
+#search {
+  border-top: 5px solid;
+  border-bottom: 5px solid;
+}
+
+#tools {
+  border-left: 5px solid;
+}
+
+#plt {
+  height: 100%;
+  width: 100%;
+}
+
+#output {
+  padding-left: 2%;
+  min-height: 70%;
+}
+
+iframe {
+  overflow: hidden;
+}
