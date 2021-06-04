@@ -15,6 +15,7 @@
           url: '/data',
           type: 'GET',
           success: function(data){
+            data = JSON.parse(data);
             Plotly.extendTraces("plt", {"x": [data["xdata"]], "y": [data["ydata"]]}, [0], data["xdata"].length);
           }
         });

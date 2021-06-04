@@ -104,4 +104,4 @@ def graph():
 
 @app.route("/data")
 def graphUpdate():
-    return {"xdata": data.getXdata(), "ydata":data.getYdata()}
+    return '{"xdata":' + str(data.getXdata()) + ', "ydata":' + str(data.getYdata()) + '}'
