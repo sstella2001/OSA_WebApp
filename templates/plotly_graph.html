@@ -1,25 +1,105 @@
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/styles.css">
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <link rel="stylesheet" href="../static/styles.css">
 </head>
 <body>
+  <div class="row">
 
-  <div id="plt"></div>
+
+  <div id="plt" class="col-sm-10"></div>
+
+   <div id="tools" class="col-sm-2">
+        <form method="get" id="execute">
+          <button id="start" type="submit">Start</button></br></br>
+          <label for="dropdown">Collection:</label>
+          <select name="dropdown" id="dropdown">
+              <option value="real-time">Real-time</option>
+              <option value="single">Single</option>
+          </select>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
   <script type="text/javascript">
-      Plotly.newPlot("plt", [{"x": [], "y": []}], {"xaxis": {"title": {"text": "Wavelength (M)"}}, "yaxis": {"title": {"text": "Signal (DBM)"}}});
-
-      setInterval(function(){
+    document.getElementById("start").addEventListener("click", click);
+    Plotly.newPlot("plt", [{"x": [], "y": []}], {"xaxis": {"title": {"text": "Wavelength (M)"}}, "yaxis": {"title": {"text": "Signal (DBM)"}}});
+    var timer;
+    function click(e){
+      e.preventDefault(e);
+      if($("#dropdown").val() == "real-time" && $("#start").html() == "Stop"){
+          clearInterval(timer);
+        $("#start").css("background-color", "green");
+        $("#start").html("Start");
+        $("#dropdown").prop("disabled", false);
+      }else if($("#dropdown").val() == "real-time" && $("#start").html() == "Start"){
+        $("#start").css("background-color", "red");
+        $("#start").html("Stop");
+        $("#dropdown").prop("disabled", true);
+        fetch();
+        timer = setInterval(function(){
         $.ajax({
-          url: '/data',
-          type: 'GET',
+              url: '/data',
+              type: 'GET',
+              success: function(data){
+                data = JSON.parse(data);
+                Plotly.extendTraces("plt", {"x": [data["xdata"]], "y": [data["ydata"]]}, [0], data["xdata"].length);
+              }
+            });
+        }, 1000);
+
+      } else {
+        $.ajax({
+          type:'GET',
+          url:'/single',
           success: function(data){
-            data = JSON.parse(data);
-            Plotly.extendTraces("plt", {"x": [data["xdata"]], "y": [data["ydata"]]}, [0], data["xdata"].length);
+            $.ajax({
+              url: '/data',
+              type: 'GET',
+              success: function(data){
+                data = JSON.parse(data);
+                Plotly.extendTraces("plt", {"x": [data["xdata"]], "y": [data["ydata"]]}, [0], data["xdata"].length);
+              }
+            });
           }
         });
-      }, 1000);
+      }
+    }
+
+    function fetch(){
+
+      if($("#dropdown").val() == "real-time" && $("#start").html() == "Start"){
+        $.ajax({
+          type:'GET',
+          url:'/fetch/stop'
+        });
+      }else if($("#dropdown").val() == "real-time" && $("#start").html() == "Stop"){
+        $.ajax({
+          type:'GET',
+          url:'/fetch/start',
+          success: function(){
+            try {
+              setTimeout(fetch, 1000);
+            } catch(err) {
+              $("#start").css("background-color", "green");
+              $("#start").html("Start");
+              $("#dropdown").prop("disabled", false);
+              console.log("Time limit exceed");
+            }
+          }
+        });
+
+      }
+    }
+
+
   </script>
 </body>
 </html>
