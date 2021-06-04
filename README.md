@@ -1,6 +1,6 @@
 # OSA_WebApp
 
-This is a Python web application using Flask that connects to a virtual optical spectrum analyzer (OSA).
+This is a Python web application using Flask that connects to a virtual optical spectrum analyzer (OSA) and is hosted on http://stellanet.no-ip.biz:5000.
 
 ## Installation
 
